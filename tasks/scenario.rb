@@ -89,7 +89,7 @@ namespace :scenario do
 
   def update_common_with_networks
     common = YAML.load_file("scenarios/#{XP5K::Config[:scenario]}/hiera/generated/common.yaml")
-    network = G5K_NETWORKS[XP5K::Config[:site]]['subnet']['cidr']
+    network = G5K_NETWORKS[XP5K::Config[:site]]['production']
     common['scenario::openstack::network'] = network
 
     File.open("scenarios/#{XP5K::Config[:scenario]}/hiera/generated/common.yaml", 'w') do |file|
