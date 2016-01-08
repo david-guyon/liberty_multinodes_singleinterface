@@ -1,0 +1,5 @@
+---
+classes:
+- scenario::openstack::controller
+- scenario::openstack::neutron
+- scenario::openstack::storage
