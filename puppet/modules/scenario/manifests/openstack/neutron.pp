@@ -65,8 +65,4 @@ class scenario::openstack::neutron (
   class { '::neutron::agents::metering':
     debug => true,
   }
-  # Why not? What is it for?
-  class { '::neutron::agents::lbaas':
-    debug => true,
-  }
 }
