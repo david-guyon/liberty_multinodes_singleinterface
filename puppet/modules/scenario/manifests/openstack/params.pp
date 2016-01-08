@@ -7,7 +7,7 @@ class scenario::openstack::params {
   $admin_password            = 'admin'
   $primary_interface         = 'eth0'
   $controller_public_address = hiera("scenario::openstack::controller_public_address")
-  $storage_public_address    = hiera("scenario::openstack::storage_public_address")
+  $storage_public_address    = hiera("scenario::openstack::controller_public_address")
   $network                   = hiera("scenario::openstack::network")
 
   case $::osfamily {
