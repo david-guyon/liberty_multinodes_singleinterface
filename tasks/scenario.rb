@@ -89,9 +89,7 @@ namespace :scenario do
 
   def update_common_with_networks
     common = YAML.load_file("scenarios/#{XP5K::Config[:scenario]}/hiera/generated/common.yaml")
-    # vlanid is not used! 
-    vlanid = xp.job_with_name("#{XP5K::Config[:jobname]}")[:resources_by_type][:vlans].first.to_i
-    network = G5K_NETWORKS[XP5K::Config[:site]][:subnet][:cidr]
+    network = G5K_NETWORKS[XP5K::Config[:site]]['subnet']['cidr']
     common['scenario::openstack::network'] = network
 
     File.open("scenarios/#{XP5K::Config[:scenario]}/hiera/generated/common.yaml", 'w') do |file|
@@ -106,8 +104,6 @@ namespace :scenario do
     # TODO loop
     controller = roles('controller').first
     common['scenario::openstack::controller_public_address'] = interfaces[controller]["public"]["ip"]
-    storage = roles('storage').first
-    common['scenario::openstack::storage_public_address'] = interfaces[storage]["public"]["ip"]
 
     File.open("scenarios/#{XP5K::Config[:scenario]}/hiera/generated/common.yaml", 'w') do |file|
       file.puts common.to_yaml
@@ -252,7 +248,7 @@ namespace :scenario do
 
     desc 'Patch horizon Puppet module'
     task :patch do
-      sh %{sed -i '24s/apache2/httpd/' scenarios/liberty_starter_kit/puppet/modules-openstack/horizon/manifests/params.pp}
+      sh %{sed -i '24s/apache2/httpd/' scenarios/liberty_multinodes_singleinterface/puppet/modules-openstack/horizon/manifests/params.pp}
     end
   end
 end
