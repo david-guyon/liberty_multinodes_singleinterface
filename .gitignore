@@ -1,4 +1,6 @@
 .interfaces.yml
+hiera/generated/
+puppet/modules-openstack/
 *.gem
 *.rbc
 /.config
