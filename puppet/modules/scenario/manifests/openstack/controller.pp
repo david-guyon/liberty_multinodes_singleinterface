@@ -33,42 +33,6 @@ class scenario::openstack::controller(
     admin_url    => "http://${storage_public_address}:9292"
   }
 
-  # Neutron (controller side)
-  class { '::neutron::db::mysql':
-    password => 'neutron',
-    # TODO be more restrictive on the grants
-    allowed_hosts => ['localhost', '127.0.0.1', '%']
-  }
-  class { '::neutron::keystone::auth':
-    password => $admin_password,
-    public_url   => "http://${controller_public_address}:9696",
-    internal_url => "http://${controller_public_address}:9696",
-    admin_url    => "http://${controller_public_address}:9696"
-  }
-  
-  # common config between neutron and computes
-  class {'::scenario::common::neutron':
-    controller_public_address => $controller_public_address
-  }
-
-  class { '::neutron::client': }
-  class { '::neutron::server':
-    database_connection => "mysql://neutron:neutron@${controller_public_address}/neutron?charset=utf8",
-    auth_password       => $admin_password,
-    identity_uri        => "http://${controller_public_address}:35357/",
-    auth_uri            => "http://${controller_public_address}:5000",
-    sync_db             => true,
-  }
-
-  class { '::neutron::server::notifications':
-    username    => 'nova',
-    tenant_name => 'services',
-    password    => $admin_password,
-    nova_url    => "http://${controller_public_address}:8774/v2",
-    auth_url    => "http://${controller_public_address}:35357",
-    region_name => "RegionOne"
-  }
-
   # Nova (controller side)
   class {
     '::nova::db::mysql':
