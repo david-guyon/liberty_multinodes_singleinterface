@@ -27,18 +27,17 @@ resources = [] << %{{type='#{XP5K::Config[:vlantype]}'}/vlan=1+{virtual != 'none
   size: 1
 })
 
-# Commented until controller in debug
-#@job_def[:roles] << XP5K::Role.new({
-#  name: 'compute',
-#  size: XP5K::Config[:computes].to_i
-#})
+@job_def[:roles] << XP5K::Role.new({
+  name: 'compute',
+  size: XP5K::Config[:computes].to_i
+})
 
 G5K_NETWORKS = YAML.load_file("scenarios/liberty_multinodes_singleinterface/g5k_networks.yml")
 
 # Override role 'all' (tasks/roles.rb)
 #
 role 'all' do
-  roles 'puppetserver', 'controller' #, 'compute'
+  roles 'puppetserver', 'controller', 'compute'
 end
 
 
@@ -77,12 +76,13 @@ namespace :scenario do
       cmd
     end
     
-    #on roles('compute') do
-    #  cmd = "/opt/puppetlabs/bin/puppet agent -t --server #{puppetserver}"
-    #  cmd += " --debug" if ENV['debug']
-    #  cmd += " --trace" if ENV['trace']
-    #  cmd
-    #end
+    # run compute recipes
+    on roles('compute') do
+      cmd = "/opt/puppetlabs/bin/puppet agent -t --server #{puppetserver}"
+      cmd += " --debug" if ENV['debug']
+      cmd += " --trace" if ENV['trace']
+      cmd
+    end
 
     Rake::Task['scenario:bootstrap'].execute
   end
