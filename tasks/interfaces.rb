@@ -33,16 +33,12 @@ def generate_interfaces_cache
         .clusters[clusterName.to_sym]
         .nodes.select { |n| n['uid'] == nodeName }.first
       
-      private_interface = restfullyDatas['network_adapters'].select{ |interface| 
-        interface['mountable'] && ( not interface['mounted'])
-      }.first
-      public_interface = restfullyDatas['network_adapters'].select{ |interface| 
+      interface = restfullyDatas['network_adapters'].select{ |interface| 
         interface['mountable'] && interface['mounted']
       }.first
 
       interfaceMapping[node] = {
-        "public" => {"device" => public_interface["device"], "ip" => public_interface["ip"] },
-        "private" => {"device" => private_interface["device"]},
+        "public" => { "device" => interface["device"], "ip" => interface["ip"] }
       }
 
     end
