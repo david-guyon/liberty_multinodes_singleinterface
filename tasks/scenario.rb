@@ -200,10 +200,18 @@ namespace :scenario do
     desc 'Configure Openstack network'
     task :network do
       publicSubnet = G5K_NETWORKS[XP5K::Config[:site]]["subnet"]
+
+      # Grid'5000 CIDR: 10.140.0.0/22 (Lyon site)
       reservedSubnet = xp.job_with_name(XP5K::Config[:jobname])['resources_by_type']['subnets'].first
+
+      # Public IP range: 10.140.0.10 .. 10.140.0.100
       publicPool = IPAddr.new(reservedSubnet).to_range.to_a[10..100]
       publicPoolStart,publicPoolStop = publicPool.first.to_s,publicPool.last.to_s
+
+      # Data network CIDR: 192.168.1.0/24
       privateCIDR = '192.168.1.0/24'
+
+      # Privage IP range: 192.168.1.10 .. 192.168.1.100
       privatePool = IPAddr.new(privateCIDR).to_range.to_a[10..100]
       privatePoolStart,privatePoolStop = privatePool.first.to_s,privatePool.last.to_s
 
