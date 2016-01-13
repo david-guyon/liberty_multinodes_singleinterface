@@ -1,3 +1,4 @@
 ---
 classes:
 - scenario::openstack::compute
+- scenario::openstack::ceilometer

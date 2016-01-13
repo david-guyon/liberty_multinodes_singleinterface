@@ -14,13 +14,13 @@ class scenario::openstack::rabbitmq (
     provider => 'rabbitmqctl',
     require  => Class['rabbitmq'],
   }
-  rabbitmq_user { ['neutron', 'nova', 'glance']:
+  rabbitmq_user { ['neutron', 'nova', 'glance', 'ceilometer']:
     admin    => true,
     password => 'an_even_bigger_secret',
     provider => 'rabbitmqctl',
     require  => Class['rabbitmq'],
   }
-  rabbitmq_user_permissions { ['neutron@/', 'nova@/', 'glance@/']:
+  rabbitmq_user_permissions { ['neutron@/', 'nova@/', 'glance@/', 'ceilometer@/']:
     configure_permission => '.*',
     write_permission     => '.*',
     read_permission      => '.*',
