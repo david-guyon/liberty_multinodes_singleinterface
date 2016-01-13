@@ -6,7 +6,7 @@ class scenario::openstack::compute (
   String $admin_password            = $scenario::openstack::params::admin_password,
   String $controller_public_address = $scenario::openstack::params::controller_public_address,
   String $storage_public_address    = $scenario::openstack::params::storage_public_address,
-  String $data_network              = $scenario::openstack::params::network
+  String $data_network              = $scenario::openstack::params::network,
 ) inherits scenario::openstack::params {
 
   file {
@@ -38,13 +38,13 @@ class scenario::openstack::compute (
   # common config between controller and computes
   class { '::scenario::common::nova': 
     controller_public_address => $controller_public_address,
-    storage_public_address    => $storage_public_address
+    storage_public_address    => $storage_public_address,
   }
 
-  class {
-    '::nova::compute':
-      #vnc_keymap  => 'fr',
-      vnc_enabled => true;
+  class { '::nova::compute':
+    vnc_enabled                 => true,
+    instance_usage_audit        => true,
+    instance_usage_audit_period => 'hour',
   }
 
   class { '::nova::compute::libvirt':
@@ -53,8 +53,8 @@ class scenario::openstack::compute (
     vncserver_listen  => '0.0.0.0',
   }
 
-  class {'::scenario::common::neutron':
-    controller_public_address => $controller_public_address
+  class { '::scenario::common::neutron':
+    controller_public_address => $controller_public_address,
   }
 
   class { '::neutron::agents::ml2::ovs':
@@ -62,5 +62,19 @@ class scenario::openstack::compute (
     local_ip         => ip_for_network($data_network),
     enabled          => true,
     tunnel_types     => ['vxlan'],
+  }
+
+  class { '::scenario::common::ceilometer':
+    controller_public_address => $controller_public_address,
+  }
+  class { '::ceilometer::agent::auth':
+    auth_url      => "http://${controller_public_address}:35357/v2.0",
+    auth_password => $admin_password,
+  }
+  class { '::ceilometer::agent::notification': }
+  class { '::ceilometer::agent::polling':
+    central_namespace => true,
+    compute_namespace => true,
+    ipmi_namespace    => true,
   }
 }

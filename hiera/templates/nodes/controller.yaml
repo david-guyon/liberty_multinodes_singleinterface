@@ -3,3 +3,4 @@ classes:
 - scenario::openstack::controller
 - scenario::openstack::neutron
 - scenario::openstack::storage
+- scenario::openstack::ceilometer
