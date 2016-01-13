@@ -10,7 +10,7 @@ class scenario::common::neutron (
   class { '::neutron':
     rabbit_user           => 'neutron',
     rabbit_password       => 'an_even_bigger_secret',
-    rabbit_host           =>  $controller_public_address,
+    rabbit_host           => $controller_public_address,
     allow_overlapping_ips => true,
     core_plugin           => 'ml2',
     service_plugins       => ['router', 'metering'],

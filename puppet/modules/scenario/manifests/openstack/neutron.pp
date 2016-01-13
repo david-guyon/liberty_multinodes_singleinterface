@@ -17,7 +17,7 @@ class scenario::openstack::neutron (
     allowed_hosts => ['localhost', '127.0.0.1', '%']
   }
   class { '::neutron::keystone::auth':
-    password => $admin_password,
+    password     => $admin_password,
     public_url   => "http://${controller_public_address}:9696",
     internal_url => "http://${controller_public_address}:9696",
     admin_url    => "http://${controller_public_address}:9696"
