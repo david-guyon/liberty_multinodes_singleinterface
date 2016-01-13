@@ -3,7 +3,7 @@
 #
 
 class scenario::openstack::storage (
-  String $admin_password = $scenario::openstack::params::admin_password,
+  String $admin_password            = $scenario::openstack::params::admin_password,
   String $controller_public_address = $scenario::openstack::params::controller_public_address
 ) inherits scenario::openstack::params {
 
