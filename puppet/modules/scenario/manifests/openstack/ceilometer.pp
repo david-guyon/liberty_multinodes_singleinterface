@@ -8,7 +8,9 @@ class scenario::openstack::ceilometer (
 ) inherits scenario::openstack::params {
 
   class { '::ceilometer::db::mysql':
-    password => 'ceilometer',
+    password      => 'ceilometer',
+    # TODO be more restrictive on the grants
+    allowed_hosts => ['localhost', '127.0.0.1', '%']
   }
 
   class { '::scenario::common::ceilometer':
@@ -28,9 +30,9 @@ class scenario::openstack::ceilometer (
   class { '::ceilometer::keystone::auth':
     service_type => 'metering',
     password     => $admin_password,
-    public_url   => "http://${controller_public_address}:9696",
-    internal_url => "http://${controller_public_address}:9696",
-    admin_url    => "http://${controller_public_address}:9696"
+    public_url   => "http://${controller_public_address}:8777",
+    internal_url => "http://${controller_public_address}:8777",
+    admin_url    => "http://${controller_public_address}:8777"
   }
 
   class { '::ceilometer::client': }
