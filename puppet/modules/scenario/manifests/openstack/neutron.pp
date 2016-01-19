@@ -58,10 +58,7 @@ class scenario::openstack::neutron (
   class { '::neutron::agents::l3':
     debug => true,
   }
-  class { '::neutron::agents::dhcp':
-    # dnsmasq_config_file => '/etc/dnsmasq.conf',
-    debug => true,
-  }
+  
   class { '::neutron::agents::metering':
     debug => true,
   }
