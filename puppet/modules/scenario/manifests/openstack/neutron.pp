@@ -65,4 +65,15 @@ class scenario::openstack::neutron (
   class { '::neutron::agents::metering':
     debug => true,
   }
+
+  # Fix for SSH: network packet size
+  class { '::neutron::agents::dhcp':
+    dnsmasq_config_file => '/etc/dnsmasq.conf',
+    debug               => true,
+  }
+  file { '/etc/dnsmasq.conf':
+    ensure => present,
+    source => "puppet:///modules/scenario/dnsmasq.conf",
+    notify => Service["neutron-dhcp-agent"]
+  }
 }
