@@ -121,6 +121,7 @@ namespace :scenario do
       'scenario:os:flavors',
       'scenario:os:images',
       'scenario:os:ceilometer_collector',
+      'scenario:os:ceilometer_alarm_notifier',
       'scenario:os:ceilometer_polling',
       'scenario:horizon_access'
     ]
@@ -265,6 +266,13 @@ namespace :scenario do
     task :ceilometer_collector do
       on(roles('controller'), user: 'root', environment: XP5K::Config[:openstack_env]) do
         %{service ceilometer-collector restart}
+      end
+    end
+
+    desc 'Restart Ceilometer alarm notifier'
+    task :ceilometer_alarm_notifier do
+      on(roles('controller'), user: 'root', environment: XP5K::Config[:openstack_env]) do
+        %{service ceilometer-alarm-notifier restart}
       end
     end
 
