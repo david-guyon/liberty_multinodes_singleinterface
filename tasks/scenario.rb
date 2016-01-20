@@ -120,6 +120,7 @@ namespace :scenario do
       'scenario:os:horizon',
       'scenario:os:flavors',
       'scenario:os:images',
+      'scenario:os:ceilometer_collector',
       'scenario:horizon_access'
     ]
     workflow.each do |task|
@@ -257,6 +258,13 @@ namespace :scenario do
     desc 'Patch horizon Puppet module'
     task :patch do
       sh %{sed -i '24s/apache2/httpd/' scenarios/liberty_multinodes_singleinterface/puppet/modules-openstack/horizon/manifests/params.pp}
+    end
+
+    desc 'Restart Ceilometer collector'
+    task :ceilometer_collector do
+      on(roles('controller'), user: 'root', environment: XP5K::Config[:openstack_env]) do
+        %{service ceilometer-collector restart}
+      end
     end
   end
 end
