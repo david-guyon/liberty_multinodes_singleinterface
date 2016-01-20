@@ -21,6 +21,11 @@ class scenario::openstack::ceilometer (
     database_connection => "mysql://ceilometer:ceilometer@${controller_public_address}/ceilometer?charset=utf8",
   }
 
+  class { '::ceilometer::agent::auth':
+    auth_url      => "http://${controller_public_address}:35357/v2.0",
+    auth_password => $admin_password,
+  }
+
   class { '::ceilometer::api':
     enabled               => true,
     keystone_password     => $admin_password,
