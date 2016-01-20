@@ -121,6 +121,7 @@ namespace :scenario do
       'scenario:os:flavors',
       'scenario:os:images',
       'scenario:os:ceilometer_collector',
+      'scenario:os:ceilometer_polling',
       'scenario:horizon_access'
     ]
     workflow.each do |task|
@@ -264,6 +265,13 @@ namespace :scenario do
     task :ceilometer_collector do
       on(roles('controller'), user: 'root', environment: XP5K::Config[:openstack_env]) do
         %{service ceilometer-collector restart}
+      end
+    end
+
+    desc 'Rate of Ceilometer meters'
+    task :ceilometer_polling do
+      on(roles('compute'), user: 'root', environment: XP5K::Config[:openstack_env]) do
+        %{sed -i "s/600/1/g" /etc/ceilometer/pipeline.yaml; service ceilometer-polling restart}
       end
     end
   end
