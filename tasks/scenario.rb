@@ -113,7 +113,6 @@ namespace :scenario do
   desc 'Bootstrap the installation' 
   task :bootstrap do
     workflow = [
-      'scenario:os:fix_proxy',
       'scenario:os:rules',
       'scenario:os:public_bridge',
       'scenario:os:network',
@@ -165,14 +164,6 @@ namespace :scenario do
 
   namespace :os do
     
-    # Should be deleted as soon as the main project is cleaned (beware of Pascal's commits)
-    desc 'Update default security group rules'
-    task :fix_proxy do
-      on(roles('controller'), user: 'root') do
-        cmd = 'rm -f /etc/environment'
-      end
-    end
-
     desc 'Update default security group rules'
     task :rules do
       on(roles('controller'), user: 'root', environment: XP5K::Config[:openstack_env]) do
