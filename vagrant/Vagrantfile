@@ -1,0 +1,71 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  config.vm.box = "ubuntu/trusty64"
+
+  config.hostmanager.enabled = true
+  config.hostmanager.manage_host = false
+  config.hostmanager.ignore_private_ip = false
+  config.hostmanager.include_offline = true
+
+  config.vm.synced_folder "../", "/openstack"
+
+  # Fix for stdin problem (https://github.com/mitchellh/vagrant/issues/1673)
+  config.vm.provision "fix-no-tty", type: "shell" do |s|
+    s.privileged = false
+    s.inline = "sudo sed -i '/tty/!s/mesg n/tty -s \\&\\& mesg n/' /root/.profile"
+  end
+
+  # Puppetmaster
+  config.vm.define "puppetmaster" do |puppet|
+    puppet.vm.network :private_network, ip: "142.168.0.2"
+
+    puppet.vm.hostname = "puppetmaster"
+    
+    puppet.vm.provider "virtualbox" do |v|
+      v.cpus = 1
+      v.memory = 700
+    end
+
+    puppet.vm.provision "shell", path: "install_puppetmaster.sh"
+  end
+
+  # Controller
+  config.vm.define "controller" do |control|
+    control.vm.network :private_network, ip: "142.168.0.3"
+
+    control.vm.hostname = "controller"
+
+    control.vm.provision "puppet" do |puppet|
+      puppet.manifests_path = "provision_manifests"
+      puppet.manifest_file = "base.pp"
+    end
+
+    control.vm.provider "virtualbox" do |v|
+      v.cpus = 2
+      v.memory = 4096
+      v.customize ["modifyvm", :id, "--nicpromisc2", "allow-all"] # Network
+    end
+
+    control.vm.provision "shell", path: "install_controller.sh"
+  end
+
+  # Compute
+  config.vm.define "compute" do |compute|
+    compute.vm.network :private_network, ip: "142.168.0.4"
+
+    compute.vm.hostname = "compute"
+
+    compute.vm.provider "virtualbox" do |v|
+      v.memory = 3000
+      v.cpus = 2
+    end
+
+    compute.vm.provision "shell", path: "install_compute.sh"
+  end
+end
