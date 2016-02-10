@@ -7,8 +7,7 @@ namespace :prepare do
       cmd = []
       cmd << 'apt-get install --yes git'
       cmd << 'git clone https://davidguyon@bitbucket.org/davidguyon/greenerbar.git'
-      cmd << 'cd greenerbar'
-      cmd << 'bash install-greenerbar.bash'
+      cmd << 'cd greenerbar ; bash install-greenerbar.bash'
       cmd
     end
   end
