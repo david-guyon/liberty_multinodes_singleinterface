@@ -21,6 +21,7 @@ First, create a file in the folder _xp5k-openstack_ with the following content:
 
 Edit the content to correspond to your need. 
 
-Now you can execute the following command to start the deployment. It takes about 25 minutes to execute. 
+Now you can execute the following commands to start the deployment and then install the [GreenerBar](https://bitbucket.org/davidguyon/greenerbar/) program on the controller node. It takes about 25 minutes to execute. 
 
     $ rake run
+    $ rake prepare:controller
