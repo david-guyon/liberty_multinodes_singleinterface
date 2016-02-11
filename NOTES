@@ -1,0 +1,9 @@
+[source](http://www.evoila.de/2015/10/27/enabling-ceilometer-events/?lang=en)
+
+    wget https://gist.githubusercontent.com/anonymous/c7c494f223f5dfb03346/raw/64270cc32ec28e6b22e051e12df44a4c8a1f8bd9/ -O /etc/ceilometer/event_definitions.yaml
+    wget https://gist.githubusercontent.com/anonymous/960ba3e17538d595d288/raw/aa7b4b670f4ec459e628c5df47f3127bf4d6bfe3/ -O /etc/ceilometer/event_pipeline.yaml
+
+Then I added these 2 lines to /etc/ceilometer/ceilometer.conf:
+
+    [notification]
+    store_events = True
