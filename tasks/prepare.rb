@@ -15,6 +15,7 @@ namespace :prepare do
       'prepare:controller_side:greenerbar',
       'prepare:controller_side:fix_tiny',
       'prepare:controller_side:rm_xs',
+      'prepare:controller_side:img_workflows',
       'prepare:controller_side:frieda',
       'prepare:controller_side:user_upload'
     ]
