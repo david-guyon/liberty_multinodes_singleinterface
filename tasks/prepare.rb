@@ -82,6 +82,16 @@ namespace :prepare do
       end
     end
 
+    desc 'Add images for workflows'
+    task :img_workflows do
+      on(roles('controller'), user: 'root', environment: XP5K::Config[:openstack_env]) do
+        cmd = []
+        cmd << '/usr/bin/wget -O /tmp/debian-palmtree.img http://public.rennes.grid5000.fr/~dguyon/images/debian-palmtree.img'
+        cmd << 'glance image-create --name="Debian Palmtree" --disk-format=qcow2 --container-format=bare --property architecture=x86_64 --progress --file /tmp/debian-palmtree.img' 
+        cmd
+      end
+    end
+
     desc 'Setup FRIEDA'
     task :frieda do
       controller_node = roles('controller').first
