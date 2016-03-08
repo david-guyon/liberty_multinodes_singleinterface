@@ -47,8 +47,8 @@ namespace :prepare do
     task :ssh_key do
       on(roles('controller'), user: 'root', environment: XP5K::Config[:openstack_env]) do
         cmd = []
-        cmd << 'ssh-keygen -t rsa -m pem -f ssh_key.pem -N ""'
-        cmd << 'nova keypair-add --pub_key ~/ssh_key.pem.pub ssh_key'
+        cmd << 'ssh-keygen -t rsa -m pem -f ~/.ssh/ssh_key.pem -N ""'
+        cmd << 'nova keypair-add --pub_key ~/.ssh/ssh_key.pem.pub ssh_key'
         cmd
       end
     end
