@@ -16,7 +16,7 @@ namespace :prepare do
       'prepare:controller_side:fix_tiny',
       'prepare:controller_side:rm_xs',
       'prepare:controller_side:img_workflows',
-      'prepare:controller_side:frieda',
+      #'prepare:controller_side:frieda',
       'prepare:controller_side:user_upload'
     ]
     workflow.each do |task|
@@ -58,7 +58,7 @@ namespace :prepare do
       on(roles('controller'), user: 'root', environment: XP5K::Config[:openstack_env]) do
         cmd = []
         cmd << 'apt-get install --yes git'
-        cmd << 'git clone https://davidguyon@bitbucket.org/davidguyon/greenerbar.git'
+        cmd << 'git clone -b nofrieda https://davidguyon@bitbucket.org/davidguyon/greenerbar.git'
         cmd << 'cd greenerbar ; bash install-greenerbar.bash'
         cmd
       end
