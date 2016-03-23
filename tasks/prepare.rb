@@ -89,6 +89,8 @@ namespace :prepare do
         cmd = []
         cmd << '/usr/bin/wget -q -O /tmp/debian-palmtree.img http://public.rennes.grid5000.fr/~dguyon/images/debian-palmtree.img'
         cmd << 'glance image-create --name="Debian Palmtree" --disk-format=qcow2 --container-format=bare --property architecture=x86_64 --progress --file /tmp/debian-palmtree.img' 
+        cmd << '/usr/bin/wget -q -O /tmp/debian-blast.img http://public.rennes.grid5000.fr/~dguyon/images/debian-blast.img'
+        cmd << 'glance image-create --name="Debian Blast" --disk-format=qcow2 --container-format=bare --property architecture=x86_64 --progress --file /tmp/debian-blast.img' 
         cmd
       end
     end
