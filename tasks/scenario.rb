@@ -270,7 +270,7 @@ namespace :scenario do
     desc 'Rate of Ceilometer meters'
     task :ceilometer_polling do
       on(roles('compute'), user: 'root', environment: XP5K::Config[:openstack_env]) do
-        %{sed -i "s/600/1/g" /etc/ceilometer/pipeline.yaml; service ceilometer-polling restart}
+        %{sed -i "s/600/20/g" /etc/ceilometer/pipeline.yaml; service ceilometer-polling restart}
       end
     end
   end
