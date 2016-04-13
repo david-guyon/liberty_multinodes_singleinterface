@@ -24,7 +24,8 @@ resources = [] << %{{type='#{XP5K::Config[:vlantype]}'}/vlan=1+{virtual != 'none
 @job_def[:resources] = resources
 @job_def[:roles] << XP5K::Role.new({
   name: 'controller',
-  size: 1
+  size: 1,
+  inner: 'puppetserver'
 })
 
 @job_def[:roles] << XP5K::Role.new({
